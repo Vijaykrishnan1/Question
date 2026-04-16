@@ -1,0 +1,226 @@
+Here’s your cleaned version without symbols/emojis, keeping it professional and easy to use:
+
+---
+
+# Password Reset System — With Full Commands
+
+## 1. Build and Run Spring Boot App
+
+### Build using Apache Maven
+
+```bash
+mvn clean install
+```
+
+### Run the application
+
+```bash
+mvn spring-boot:run
+```
+
+OR
+
+```bash
+java -jar target/password-reset-app.jar
+```
+
+---
+
+## 2. Run JUnit Tests
+
+Using JUnit
+
+```bash
+mvn test
+```
+
+Run specific test:
+
+```bash
+mvn -Dtest=PasswordResetServiceTest test
+```
+
+---
+
+## 3. GitHub Setup
+
+Using GitHub
+
+### Initialize repo
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+### Connect to GitHub
+
+```bash
+git remote add origin https://github.com/your-username/password-reset.git
+git branch -M main
+git push -u origin main
+```
+
+---
+
+## 4. CI Pipeline (GitHub Actions)
+
+No command needed manually — triggers automatically on push.
+
+### Trigger manually
+
+```bash
+git add .
+git commit -m "trigger pipeline"
+git push
+```
+
+---
+
+## 5. Docker Commands
+
+Using Docker
+
+### Build Docker Image
+
+```bash
+docker build -t username/password-reset-app .
+```
+
+### Run Container
+
+```bash
+docker run -p 8080:8080 username/password-reset-app
+```
+
+### Check Running Containers
+
+```bash
+docker ps
+```
+
+### Stop Container
+
+```bash
+docker stop <container_id>
+```
+
+---
+
+## 6. Push Image to Docker Hub
+
+### Login
+
+```bash
+docker login
+```
+
+### Tag Image
+
+```bash
+docker tag password-reset-app username/password-reset-app
+```
+
+### Push Image
+
+```bash
+docker push username/password-reset-app
+```
+
+---
+
+## 7. Kubernetes Commands
+
+Using Kubernetes
+
+### Apply Deployment
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+### Apply Service
+
+```bash
+kubectl apply -f service.yaml
+```
+
+### Check Resources
+
+```bash
+kubectl get pods
+kubectl get services
+kubectl get deployments
+```
+
+### Describe Pod (debugging)
+
+```bash
+kubectl describe pod <pod-name>
+```
+
+### View Logs
+
+```bash
+kubectl logs <pod-name>
+```
+
+### Delete Deployment
+
+```bash
+kubectl delete -f deployment.yaml
+```
+
+---
+
+## 8. Full CI/CD Flow (What Happens Automatically)
+
+1. Code push to GitHub
+2. GitHub Actions runs:
+
+   * mvn clean install
+   * mvn test
+   * docker build
+   * docker push
+3. Kubernetes pulls latest image
+
+---
+
+## 9. Optional: Auto Deploy in Kubernetes
+
+```bash
+kubectl set image deployment/password-reset-app \
+app=username/password-reset-app:latest
+```
+
+---
+
+## 10. Real-World Dev Workflow
+
+```bash
+git add .
+git commit -m "feature: OTP validation"
+git push
+
+kubectl apply -f deployment.yaml
+
+kubectl get pods
+```
+
+---
+
+## Pro Tips
+
+* Use `.env` file for secrets
+* Use port forwarding for local testing:
+
+```bash
+kubectl port-forward pod/<pod-name> 8080:8080
+```
+
+* Use rolling updates:
+
+```bash
+kubectl rollout status deployment/password-reset-app
+```

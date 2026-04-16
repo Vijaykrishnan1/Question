@@ -1,0 +1,32 @@
+@ExtendWith(MockitoExtension.class)
+class PasswordResetServiceTest {
+
+    @Mock
+    private OtpRepository otpRepo;
+
+    @Mock
+    private UserRepository userRepo;
+
+    @InjectMocks
+    private PasswordResetService service;
+
+    @Test
+    void testInvalidOtp() {
+        OtpEntity otp = new OtpEntity("test@mail.com", "123456", LocalDateTime.now().plusMinutes(5));
+        when(otpRepo.findByEmail("test@mail.com")).thenReturn(otp);
+
+        assertThrows(RuntimeException.class, () -> {
+            service.resetPassword("test@mail.com", "000000", "newPass");
+        });
+    }
+
+    @Test
+    void testExpiredOtp() {
+        OtpEntity otp = new OtpEntity("test@mail.com", "123456", LocalDateTime.now().minusMinutes(1));
+        when(otpRepo.findByEmail("test@mail.com")).thenReturn(otp);
+
+        assertThrows(RuntimeException.class, () -> {
+            service.resetPassword("test@mail.com", "123456", "newPass");
+        });
+    }
+}

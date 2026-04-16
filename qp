@@ -14,3 +14,5 @@ Tasks:
 ➢ Containerize application using Docker (write Dockerfile)
 ➢ Build and push Docker image to container registry (Docker Hub)
 ➢ Create Kubernetes deployment and service YAML files
+
+anything else....

@@ -1,0 +1,19 @@
+Quick Gotchas
+
+Pipeline Push Fails: GitHub Actions needs your Docker credentials (saved in GitHub Secrets) to push the image.
+
+Data Wipes on Restart: The database is a temporary HashMap. If the app or pod restarts, users/OTPs are deleted.
+
+K8s Needs a Host: kubectl apply won't work unless you have a local cluster running (like Minikube or Docker Desktop).
+
+Required Tools: Ensure Java 17, Maven, Docker, and Git are actually installed on the machine.
+
+🗺️ 4-Step Execution Plan
+
+Code First: Run mvn spring-boot:run locally. Test that the OTP works.
+
+Docker Second: Run docker build and docker run locally. Make sure the container works.
+
+K8s Third: Start your local cluster, run kubectl apply, and check if the pods spin up.
+
+Automate Last: Push the working code to GitHub to trigger the CI/CD pipeline.

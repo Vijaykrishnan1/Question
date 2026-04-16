@@ -1,0 +1,95 @@
+Flow
+User enters email
+Generate OTP (time-bound, e.g., 5 min)
+Store OTP (DB or cache like Redis)
+Send OTP via email/SMS
+User submits OTP + new password
+Validate OTP → update password
+
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+class User {
+    String email;
+    String password;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+}
+
+class OtpEntity {
+    String email;
+    String otp;
+    LocalDateTime expiry;
+
+    public OtpEntity(String email, String otp, LocalDateTime expiry) {
+        this.email = email;
+        this.otp = otp;
+        this.expiry = expiry;
+    }
+}
+
+public class PasswordResetService {
+
+    // Simulating database with HashMaps
+    private Map<String, User> userRepo = new HashMap<>();
+    private Map<String, OtpEntity> otpRepo = new HashMap<>();
+
+    // Generate OTP
+    public String generateOtp(String email) {
+        String otp = String.format("%06d", new Random().nextInt(999999));
+        OtpEntity entity = new OtpEntity(email, otp, LocalDateTime.now().plusMinutes(5));
+
+        otpRepo.put(email, entity);
+        return otp;
+    }
+
+    // Reset Password
+    public boolean resetPassword(String email, String otp, String newPassword) {
+
+        OtpEntity record = otpRepo.get(email);
+
+        if (record == null || !record.otp.equals(otp)) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        if (record.expiry.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("OTP Expired");
+        }
+
+        User user = userRepo.get(email);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // In plain Java, no BCrypt unless you add a library
+        user.password = newPassword;
+
+        otpRepo.remove(email);
+        return true;
+    }
+
+    // Helper method to add user (simulate DB)
+    public void addUser(String email, String password) {
+        userRepo.put(email, new User(email, password));
+    }
+
+    // Main method for testing
+    public static void main(String[] args) {
+        PasswordResetService service = new PasswordResetService();
+
+        service.addUser("test@example.com", "oldpass");
+
+        String otp = service.generateOtp("test@example.com");
+        System.out.println("Generated OTP: " + otp);
+
+        service.resetPassword("test@example.com", otp, "newpass");
+        System.out.println("Password reset successful!");
+    }
+}
